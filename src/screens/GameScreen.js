@@ -445,9 +445,9 @@ export default function GameScreen({ route, navigation }) {
 
       <View style={s.gArea}>
         <View style={s.headerChart}>
-          <Text style={s.title}>PROFIL : {currentStage.title}</Text>
-          <View style={s.globalTimerBox}>
-            <Text style={s.globalTimerText}>{formatGlobalTime(globalTimer)}</Text>
+          <Text style={[s.title, { color: currentStage.color }]}>PROFIL : {currentStage.title}</Text>
+          <View style={[s.globalTimerBox, { borderColor: currentStage.color + '44' }]}>
+            <Text style={[s.globalTimerText, { color: currentStage.color }]}>{formatGlobalTime(globalTimer)}</Text>
           </View>
         </View>
 
@@ -809,11 +809,11 @@ export default function GameScreen({ route, navigation }) {
 }
 
 const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#121212' },
+  container: { flex: 1, backgroundColor: '#000' },
 
-  gArea: { height: 365, backgroundColor: '#1A1A1A', paddingTop: 40, alignItems: 'center' },
+  gArea: { height: 365, backgroundColor: '#000', paddingTop: 40, alignItems: 'center' },
   headerChart: { width: SW * 0.9, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
-  title: { color: '#FFD700', fontWeight: 'bold', fontSize: 25 },
+  title: { color: '#FFF', fontWeight: 'bold', fontSize: 25 },
 
   globalTimerBox: {
     backgroundColor: 'rgba(255,255,255,0.06)',
@@ -861,11 +861,11 @@ const s = StyleSheet.create({
   vomiMini: { paddingHorizontal: 4, paddingVertical: 2 },
   avgText: { color: 'rgba(255,255,255,0.95)', fontWeight: '900', fontSize: 14 },
 
-  stBar: { padding: 10, alignItems: 'center', backgroundColor: '#E74C3C' },
-  stT: { color: 'white', fontWeight: 'bold' },
+  stBar: { padding: 10, alignItems: 'center', backgroundColor: '#FFD700' },
+  stT: { color: 'black', fontWeight: 'bold' },
 
-  mBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.8)', justifyContent: 'center', alignItems: 'center' },
-  mBox: { width: '80%', backgroundColor: '#222', padding: 20, borderRadius: 20, borderWidth: 2, borderColor: '#FFD700', alignItems: 'center' },
+  mBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.9)', justifyContent: 'center', alignItems: 'center' },
+  mBox: { width: '80%', backgroundColor: '#111', padding: 20, borderRadius: 20, borderWidth: 1, borderColor: '#FFD700', alignItems: 'center' },
   mT: { color: 'white', fontSize: 22, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
   mBtn: { backgroundColor: '#FFD700', padding: 12, borderRadius: 10, marginVertical: 5, width: 140 },
   mBtnT: { textAlign: 'center', fontWeight: 'bold', color: 'black' },
@@ -905,7 +905,7 @@ const s = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#E74C3C',
+    backgroundColor: '#333',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -918,11 +918,11 @@ const s = StyleSheet.create({
   pifPafPlayerName: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#FFF',
     flex: 1,
   },
   pifPafRankBadge: {
-    backgroundColor: '#E74C3C',
+    backgroundColor: '#FFD700',
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -930,19 +930,19 @@ const s = StyleSheet.create({
     alignItems: 'center',
   },
   pifPafRankText: {
-    color: 'white',
+    color: '#000',
     fontWeight: '900',
     fontSize: 18,
   },
   pifPafRankedCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ffe5e5',
+    backgroundColor: '#111',
     padding: 12,
     borderRadius: 10,
     marginBottom: 8,
-    borderWidth: 2,
-    borderColor: '#E74C3C',
+    borderWidth: 1,
+    borderColor: '#FFD700',
     gap: 10,
   },
   podiumButton: {
@@ -970,7 +970,7 @@ const s = StyleSheet.create({
     maxWidth: 200,
   },
   pifPafZoneTitle: {
-    color: '#FFD700',
+    color: '#FFF',
     fontSize: 10,
     fontWeight: 'bold',
     marginBottom: 5,

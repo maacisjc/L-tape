@@ -4,7 +4,7 @@ export const STAGES = {
   everest: {
     id: 'everest',
     title: "L'EVEREST",
-    color: "#FFD700", // Jaune
+    color: "#FF3B30", // Rouge Extrême
     // Profil très varié
     heights: { 1: 10, 2: 30, 3: 30, 4: 50, 5: 50, 6: 50, 7: 70, 8: 30, 9: 30, 10: 50, 11: 90, 12: 90, 13: 110, 14: 110, 15: 150, 16: 100, 17: 120, 18: 160, 19: 160, 20: 180 },
     data: {
@@ -31,7 +31,7 @@ export const STAGES = {
   mont_ventoux: {
     id: 'mont_ventoux',
     title: "LE MONT VENTOUX",
-    color: "#E74C3C", // Rouge
+    color: "#FF9500", // Orange Moyen
     // Profil : Longue montée constante, un replat au milieu (Chalet Reynard), final terrible
     heights: { 1: 20, 2: 20, 3: 40, 4: 60, 5: 80, 6: 100, 7: 120, 8: 140, 9: 140, 10: 140, 11: 160, 12: 180, 13: 200, 14: 220, 15: 240, 16: 260, 17: 280, 18: 280, 19: 350, 20: 350 },
     data: {
@@ -52,7 +52,7 @@ export const STAGES = {
   enfer_du_nord: {
     id: 'enfer_du_nord',
     title: "L'ENFER DU NORD",
-    color: "#555555", // Gris Anthracite
+    color: "#FFCC00", // Jaune Difficile
     // Profil : Tout plat, mais haché par les pavés (pics d'intensité)
     heights: { 1: 10, 2: 10, 3: 30, 4: 10, 5: 10, 6: 30, 7: 10, 8: 10, 9: 40, 10: 10, 11: 10, 12: 40, 13: 10, 14: 10, 15: 40, 16: 10, 17: 40, 18: 10, 19: 40, 20: 40 },
     data: {
@@ -93,7 +93,7 @@ export const STAGES = {
   la_soif: {
     id: 'la_soif',
     title: "LA SOIF",
-    color: "#D35400", // Orange intense
+    color: "#4CD964", // Vert Intense/Facile
     // 10 étapes, beaucoup de murs de 3 min
     heights: { 1: 10, 2: 40, 3: 60, 4: 90, 5: 120, 6: 140, 7: 170, 8: 200, 9: 220, 10: 220 },
     data: {
@@ -117,21 +117,20 @@ export const STAGES = {
   }
 };
 
-// 2. Le tableau pour l'affichage dans StageSelectionScreen
 export const STAGES_LIST = [
   {
-    id: 'everest',
-    name: 'L\'Everest',
-    difficulty: 'Extrême',
-    color: '#FFD700', // Jaune
-    desc: 'Le toit du monde. Des cols mythiques et des descentes vertigineuses.',
-    profile: '⛰️ Montagne'
+    id: 'la_soif',
+    name: "L'Apéro Sprint",
+    difficulty: 'Facile',
+    color: '#4CD964',
+    desc: '10 étapes rapides. Une série de murs de 3 minutes pour les assoiffés.',
+    profile: '🍺 Sprint'
   },
   {
     id: 'mont_ventoux',
     name: 'Mont Ventoux',
     difficulty: 'Moyen',
-    color: '#E74C3C', // Rouge
+    color: '#FF9500',
     desc: 'Une montée interminable. Gérez votre effort jusqu\'au sommet chauve.',
     profile: '↗️ Ascension'
   },
@@ -139,16 +138,16 @@ export const STAGES_LIST = [
     id: 'enfer_du_nord',
     name: 'L\'Enfer du Nord',
     difficulty: 'Difficile',
-    color: '#555555', // Gris
+    color: '#FFCC00',
     desc: 'Le royaume des pavés. Ça secoue : alternance de calme et de murs brutaux.',
     profile: '🧱 Pavés'
   },
   {
-    id: 'la_soif',
-    name: "L'Apéro Sprint",
-    difficulty: 'Intense',
-    color: '#D35400',
-    desc: '10 étapes rapides. Une série de murs de 3 minutes pour les assoiffés.',
-    profile: '🍺 Sprint'
+    id: 'everest',
+    name: 'L\'Everest',
+    difficulty: 'Extrême',
+    color: '#FF3B30',
+    desc: 'Le toit du monde. Des cols mythiques et des descentes vertigineuses.',
+    profile: '⛰️ Montagne'
   },
 ];

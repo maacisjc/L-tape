@@ -187,7 +187,7 @@ export default function PlayersScreen({ navigation }) {
             <TextInput
               style={styles.input}
               placeholder="Ex: Emold_667"
-              placeholderTextColor="#999"
+              placeholderTextColor="rgba(255, 215, 0, 0.4)"
               value={newPlayerName}
               onChangeText={setNewPlayerName}
               autoFocus={true}
@@ -200,25 +200,27 @@ export default function PlayersScreen({ navigation }) {
                   width: 90,
                   height: 90,
                   borderRadius: 45,
-                  backgroundColor: '#eee',
+                  backgroundColor: '#222',
                   overflow: 'hidden',
                   justifyContent: 'center',
                   alignItems: 'center',
+                  borderWidth: 1,
+                  borderColor: '#FFD700',
                 }}
               >
                 {newPlayerPhoto ? (
                   <Image source={{ uri: newPlayerPhoto }} style={{ width: '100%', height: '100%' }} />
                 ) : (
-                  <Text style={{ color: '#888' }}>Photo</Text>
+                  <Text style={{ color: '#FFD700', opacity: 0.5 }}>Photo</Text>
                 )}
               </View>
 
               <View style={{ flexDirection: 'row', marginTop: 10 }}>
                 <TouchableOpacity onPress={pickPhoto} style={{ marginHorizontal: 8 }}>
-                  <Text style={{ color: '#E30513', fontWeight: 'bold' }}>📷 Caméra</Text>
+                  <Text style={{ color: '#FFD700', fontWeight: 'bold' }}>Caméra</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={pickFromGallery} style={{ marginHorizontal: 8 }}>
-                  <Text style={{ color: '#E30513', fontWeight: 'bold' }}>🖼️ Galerie</Text>
+                  <Text style={{ color: '#FFD700', fontWeight: 'bold' }}>Galerie</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -244,14 +246,14 @@ export default function PlayersScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#222',
+    backgroundColor: '#000',
     paddingTop: 50,
     paddingHorizontal: 20,
   },
   header: {
     marginBottom: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#444',
+    borderBottomColor: '#222',
     paddingBottom: 10,
   },
   backButton: {
@@ -278,7 +280,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   emptyText: {
-    color: '#666',
+    color: '#333',
     fontStyle: 'italic',
     textAlign: 'center',
     marginTop: 50,
@@ -287,12 +289,12 @@ const styles = StyleSheet.create({
   playerCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#333',
+    backgroundColor: '#111',
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 12,
     marginBottom: 10,
-    borderLeftWidth: 5,
-    borderLeftColor: '#E30513',
+    borderWidth: 1,
+    borderColor: '#222',
   },
   avatarCircle: {
     width: 30,
@@ -314,7 +316,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   deleteButton: {
-    color: '#666',
+    color: '#444',
     fontSize: 20,
     padding: 5,
   },
@@ -328,14 +330,15 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#FFF',
+    backgroundColor: '#111',
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 5,
+    borderWidth: 1,
+    borderColor: '#FFD700',
   },
   addButtonText: {
     fontSize: 40,
-    color: '#000',
+    color: '#FFD700',
     marginTop: -5,
   },
   continueButton: {
@@ -343,11 +346,12 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 30,
-    elevation: 5,
   },
   disabledButton: {
-    backgroundColor: '#555',
-    opacity: 0.7,
+    backgroundColor: '#111',
+    borderColor: '#222',
+    borderWidth: 1,
+    opacity: 0.5,
   },
   continueButtonText: {
     color: '#000',
@@ -357,47 +361,62 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.8)',
+    backgroundColor: 'rgba(0,0,0,0.95)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalContent: {
-    width: '80%',
-    backgroundColor: '#FFF',
-    padding: 20,
-    borderRadius: 15,
+    width: '85%',
+    backgroundColor: '#111',
+    padding: 25,
+    borderRadius: 20,
+    borderColor: '#FFD700',
+    borderWidth: 1.5,
   },
   modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 15,
+    fontSize: 16,
+    fontWeight: '900',
+    marginBottom: 25, // Augmenté pour éviter que le texte soit trop bas
     textAlign: 'center',
+    color: '#FFEB00',
+    textTransform: 'uppercase',
+    letterSpacing: 4,
   },
   input: {
-    borderBottomWidth: 2,
-    borderBottomColor: '#E30513',
+    borderWidth: 2,
+    borderColor: '#FFEB00', // Jaune plus saturé
+    borderRadius: 12,
     fontSize: 18,
-    marginBottom: 20,
-    padding: 10,
+    marginBottom: 25,
+    padding: 15,
+    color: '#FFF',
+    backgroundColor: '#000',
+    // Styles spécifiques pour forcer la suppression du bord blanc sur navigateur
+    outlineColor: 'transparent',
+    outlineWidth: 0,
+    outlineStyle: 'none',
+    boxShadow: 'none',
   },
   modalButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 20,
   },
   cancelButton: {
     padding: 10,
   },
   cancelButtonText: {
-    color: '#666',
+    color: '#FFD700',
+    opacity: 0.6,
   },
   validateButton: {
-    backgroundColor: '#E30513',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
+    backgroundColor: '#FFD700',
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 8,
   },
   validateButtonText: {
-    color: '#FFF',
+    color: '#000',
     fontWeight: 'bold',
   },
 });

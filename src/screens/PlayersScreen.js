@@ -1,69 +1,130 @@
 // src/screens/PlayersScreen.js
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  TouchableOpacity, 
-  FlatList, 
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
   TextInput,
-  Modal, // Pour la fenêtre pop-up
+  Modal,
   StatusBar,
-  Alert
+  Alert,
+  Image,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function PlayersScreen({ navigation }) {
-  // --- ÉTAT (Mémoire de l'écran) ---
-  const [players, setPlayers] = useState([]); // Liste des joueurs
-  const [modalVisible, setModalVisible] = useState(false); // Est-ce que la pop-up est ouverte ?
-  const [newPlayerName, setNewPlayerName] = useState(''); // Ce qu'on tape dans le champ texte
+  // --- ÉTAT ---
+  const [players, setPlayers] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [newPlayerName, setNewPlayerName] = useState('');
+  const [newPlayerPhoto, setNewPlayerPhoto] = useState(null); // uri string
 
-  // --- FONCTIONS ---
-
-  // Ajouter un joueur
-  const handleAddPlayer = () => {
-    if (newPlayerName.trim().length > 0) {
-      // On crée un nouvel objet joueur avec un ID unique
-      const newPlayer = { id: Date.now().toString(), name: newPlayerName };
-      setPlayers([...players, newPlayer]);
-      setNewPlayerName(''); // On vide le champ
-      setModalVisible(false); // On ferme la pop-up
-    }
-  };
-
-  // Aller à la suite
-  const handleContinue = () => {
-    if (players.length < 2) {
-      Alert.alert("Pas assez de coureurs", "Il faut au moins 2 joueurs pour lancer la course !");
+  // --- PHOTO: CAMÉRA ---
+  const pickPhoto = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert(
+        'Permission refusée',
+        "Autorise l'accès à la caméra pour prendre une photo."
+      );
       return;
     }
-    // On change de page ET on envoie la liste des joueurs
-    navigation.navigate('StageSelection', { players: players });
+
+    const res = await ImagePicker.launchCameraAsync({
+      quality: 0.6,
+      allowsEditing: true,
+      aspect: [1, 1],
+    });
+
+    if (!res.canceled) {
+      const uri = res.assets?.[0]?.uri;
+      if (uri) setNewPlayerPhoto(uri);
+    }
   };
 
-  // Supprimer un joueur (si on s'est trompé)
+  // --- PHOTO: GALERIE ---
+  const pickFromGallery = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert(
+        'Permission refusée',
+        "Autorise l'accès aux photos."
+      );
+      return;
+    }
+
+    const res = await ImagePicker.launchImageLibraryAsync({
+      quality: 0.6,
+      allowsEditing: true,
+      aspect: [1, 1],
+    });
+
+    if (!res.canceled) {
+      const uri = res.assets?.[0]?.uri;
+      if (uri) setNewPlayerPhoto(uri);
+    }
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setNewPlayerName('');
+    setNewPlayerPhoto(null);
+  };
+
+  // --- Ajouter un joueur ---
+  const handleAddPlayer = () => {
+    if (players.length >= 10) {
+      Alert.alert('Limite atteinte', 'Le nombre maximum de joueurs est de 10.');
+      closeModal();
+      return;
+    }
+
+    if (newPlayerName.trim().length > 0) {
+      const newPlayer = {
+        id: Date.now().toString(),
+        name: newPlayerName.trim(),
+        photo: newPlayerPhoto, // peut être null si pas de photo
+      };
+
+      setPlayers([...players, newPlayer]);
+      closeModal();
+    }
+  };
+
+  // --- Continuer ---
+  const handleContinue = () => {
+    if (players.length < 2) {
+      Alert.alert(
+        'Pas assez de coureurs',
+        'Il faut au moins 2 joueurs pour lancer la course !'
+      );
+      return;
+    }
+    navigation.navigate('StageSelection', { players });
+  };
+
+  // --- Supprimer un joueur ---
   const removePlayer = (id) => {
-    setPlayers(players.filter(player => player.id !== id));
+    setPlayers(players.filter((player) => player.id !== id));
   };
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-        {/* --- 1. HEADER AVEC BOUTON RETOUR --- */}
+
+      {/* HEADER */}
       <View style={styles.header}>
-        {/* NOUVEAU BOUTON RETOUR ICI */}
-        <TouchableOpacity 
-          onPress={() => navigation.goBack()} 
-          style={styles.backButton}
-        >
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Text style={styles.backButtonText}>← Accueil</Text>
         </TouchableOpacity>
 
         <Text style={styles.title}>AJOUTEZ VOS</Text>
         <Text style={styles.subtitle}>JOUEURS</Text>
-        </View>
+      </View>
 
-      {/* --- 2. LISTE DES JOUEURS (Au milieu) --- */}
+      {/* LISTE */}
       <View style={styles.listContainer}>
         {players.length === 0 ? (
           <Text style={styles.emptyText}>Aucun coureur sur la ligne de départ...</Text>
@@ -76,7 +137,9 @@ export default function PlayersScreen({ navigation }) {
                 <View style={styles.avatarCircle}>
                   <Text style={styles.avatarText}>{index + 1}</Text>
                 </View>
+
                 <Text style={styles.playerName}>{item.name}</Text>
+
                 <TouchableOpacity onPress={() => removePlayer(item.id)}>
                   <Text style={styles.deleteButton}>✖</Text>
                 </TouchableOpacity>
@@ -86,19 +149,23 @@ export default function PlayersScreen({ navigation }) {
         )}
       </View>
 
-      {/* --- 3. BOUTONS DU BAS --- */}
+      {/* FOOTER */}
       <View style={styles.footer}>
-        {/* Bouton Gauche : Ajouter (+) */}
-        <TouchableOpacity 
-          style={styles.addButton} 
-          onPress={() => setModalVisible(true)}
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => {
+            if (players.length >= 10) {
+              Alert.alert('Limite atteinte', 'Vous ne pouvez pas ajouter plus de 10 joueurs.');
+              return;
+            }
+            setModalVisible(true);
+          }}
         >
           <Text style={styles.addButtonText}>+</Text>
         </TouchableOpacity>
 
-        {/* Bouton Droite : Continuer (->) */}
-        <TouchableOpacity 
-          style={[styles.continueButton, players.length < 2 && styles.disabledButton]} 
+        <TouchableOpacity
+          style={[styles.continueButton, players.length < 2 && styles.disabledButton]}
           onPress={handleContinue}
           disabled={players.length < 2}
         >
@@ -106,28 +173,62 @@ export default function PlayersScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      {/* --- MODAL (POP-UP POUR AJOUTER UN NOM) --- */}
+      {/* MODAL AJOUT */}
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
+        onRequestClose={closeModal}
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Nom du coureur</Text>
+
             <TextInput
               style={styles.input}
-              placeholder="Ex: Poulidor"
+              placeholder="Ex: Emold_667"
               placeholderTextColor="#999"
               value={newPlayerName}
               onChangeText={setNewPlayerName}
-              autoFocus={true} // Le clavier s'ouvre tout seul
+              autoFocus={true}
             />
+
+            {/* PHOTO PICKER */}
+            <View style={{ alignItems: 'center', marginBottom: 15 }}>
+              <View
+                style={{
+                  width: 90,
+                  height: 90,
+                  borderRadius: 45,
+                  backgroundColor: '#eee',
+                  overflow: 'hidden',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                {newPlayerPhoto ? (
+                  <Image source={{ uri: newPlayerPhoto }} style={{ width: '100%', height: '100%' }} />
+                ) : (
+                  <Text style={{ color: '#888' }}>Photo</Text>
+                )}
+              </View>
+
+              <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                <TouchableOpacity onPress={pickPhoto} style={{ marginHorizontal: 8 }}>
+                  <Text style={{ color: '#E30513', fontWeight: 'bold' }}>📷 Caméra</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={pickFromGallery} style={{ marginHorizontal: 8 }}>
+                  <Text style={{ color: '#E30513', fontWeight: 'bold' }}>🖼️ Galerie</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* BOUTONS */}
             <View style={styles.modalButtons}>
-              <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.cancelButton}>
+              <TouchableOpacity onPress={closeModal} style={styles.cancelButton}>
                 <Text style={styles.cancelButtonText}>Annuler</Text>
               </TouchableOpacity>
+
               <TouchableOpacity onPress={handleAddPlayer} style={styles.validateButton}>
                 <Text style={styles.validateButtonText}>Ajouter</Text>
               </TouchableOpacity>
@@ -135,7 +236,6 @@ export default function PlayersScreen({ navigation }) {
           </View>
         </View>
       </Modal>
-
     </View>
   );
 }
@@ -144,33 +244,24 @@ export default function PlayersScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#222', // Gris très foncé
+    backgroundColor: '#222',
     paddingTop: 50,
     paddingHorizontal: 20,
   },
-  // Header
   header: {
     marginBottom: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#444',
     paddingBottom: 10,
   },
-  header: {
-    marginBottom: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#444',
-    paddingBottom: 10,
-  },
-  
   backButton: {
-    marginBottom: 10, // Un peu d'espace avant le titre
-    alignSelf: 'flex-start', // Colle le bouton à gauche
+    marginBottom: 10,
+    alignSelf: 'flex-start',
   },
   backButtonText: {
-    color: '#888', // Gris clair discret
+    color: '#888',
     fontSize: 16,
   },
-  
   title: {
     fontSize: 24,
     color: '#FFF',
@@ -178,14 +269,13 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 40,
-    color: '#FFD700', // Jaune
+    color: '#FFD700',
     fontWeight: '900',
     fontStyle: 'italic',
     textTransform: 'uppercase',
   },
-  // Liste
   listContainer: {
-    flex: 1, // Prend toute la place disponible au milieu
+    flex: 1,
   },
   emptyText: {
     color: '#666',
@@ -202,7 +292,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
     borderLeftWidth: 5,
-    borderLeftColor: '#E30513', // Rouge
+    borderLeftColor: '#E30513',
   },
   avatarCircle: {
     width: 30,
@@ -228,7 +318,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     padding: 5,
   },
-  // Footer (Boutons bas)
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -257,7 +346,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   disabledButton: {
-    backgroundColor: '#555', // Grisé si pas assez de joueurs
+    backgroundColor: '#555',
     opacity: 0.7,
   },
   continueButtonText: {
@@ -266,7 +355,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontStyle: 'italic',
   },
-  // Modal Styles
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.8)',

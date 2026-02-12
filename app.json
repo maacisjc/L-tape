@@ -23,7 +23,11 @@
       "edgeToEdgeEnabled": true
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "bundler": "metro",
+      "baseUrl": "/L-tape" 
+    },
+    "githubUrl": "https://github.com/maacisjc/L-tape"
     }
-  }
+  
 }
+

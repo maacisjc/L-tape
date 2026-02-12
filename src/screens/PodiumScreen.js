@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Dimensions, ScrollView, Image, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Dimensions, ScrollView, Image } from 'react-native';
 
 const { width: SW, height: SH } = Dimensions.get('window');
 
-// Composant Confettis
+// Composant Confettis (Version Minimaliste Noir & Blanc)
 const FastConfetti = () => {
-  const colors = ['#e74c3c', '#f1c40f', '#2ecc71', '#3498db', '#9b59b6'];
+  const colors = ['#FFD700', '#F1C40F', '#FFF', '#888', '#444'];
   return (
     <View style={StyleSheet.absoluteFill} pointerEvents="none">
       {[...Array(50)].map((_, i) => (
@@ -15,9 +15,10 @@ const FastConfetti = () => {
             position: 'absolute',
             top: Math.random() * SH * 0.6,
             left: Math.random() * SW,
-            width: 8,
-            height: 8,
+            width: 6,
+            height: 6,
             backgroundColor: colors[i % colors.length],
+            opacity: 0.6,
             transform: [{ rotate: `${Math.random() * 360}deg` }],
           }}
         />
@@ -27,20 +28,16 @@ const FastConfetti = () => {
 };
 
 export default function PodiumScreen({ route, navigation }) {
-  // On récupère le classement ET un indicateur si le jeu est fini
   const { ranking, isGameOver } = route.params || { ranking: [], isGameOver: false };
 
-  // Retour Menu Principal (Fin définitive)
   const handleBackHome = () => {
     navigation.popToTop();
   };
 
-  // Retour au jeu (Juste fermer le podium temporairement)
   const handleResumeGame = () => {
     navigation.goBack();
   };
 
-  // Les 3 premiers pour le podium
   const topThree = ranking.slice(0, 3);
   const others = ranking.slice(3);
 
@@ -50,11 +47,9 @@ export default function PodiumScreen({ route, navigation }) {
       {isGameOver && <FastConfetti />}
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.podiumTitle}>
-          {isGameOver ? "🏆 PODIUM FINAL 🏆" : "🥇 CLASSEMENT PROVISOIRE"}
+        <Text style={[styles.podiumTitle, { color: '#FFD700' }]}>
+          {isGameOver ? "RÉSULTATS FINAUX" : "CLASSEMENT ACTUEL"}
         </Text>
-
-
 
         {/* PODIUM */}
         {topThree.length > 0 && (
@@ -69,8 +64,8 @@ export default function PodiumScreen({ route, navigation }) {
                     <Text style={styles.avatarNumber}>2</Text>
                   )}
                 </View>
-                <Text style={styles.podiumName} numberOfLines={2}>{topThree[1].name}</Text>
-                <Text style={styles.podiumMedal}>🥈</Text>
+                <Text style={styles.podiumName} numberOfLines={1}>{topThree[1].name}</Text>
+                <Text style={styles.podiumPlaceText}>2ND</Text>
               </View>
             )}
 
@@ -84,8 +79,8 @@ export default function PodiumScreen({ route, navigation }) {
                     <Text style={styles.avatarNumber}>1</Text>
                   )}
                 </View>
-                <Text style={styles.podiumName} numberOfLines={2}>{topThree[0].name}</Text>
-                <Text style={styles.podiumMedal}>🥇</Text>
+                <Text style={[styles.podiumName, { color: '#000' }]} numberOfLines={1}>{topThree[0].name}</Text>
+                <Text style={[styles.podiumPlaceText, { color: '#000' }]}>1ER</Text>
               </View>
             )}
 
@@ -99,8 +94,8 @@ export default function PodiumScreen({ route, navigation }) {
                     <Text style={styles.avatarNumber}>3</Text>
                   )}
                 </View>
-                <Text style={styles.podiumName} numberOfLines={2}>{topThree[2].name}</Text>
-                <Text style={styles.podiumMedal}>🥉</Text>
+                <Text style={styles.podiumName} numberOfLines={1}>{topThree[2].name}</Text>
+                <Text style={styles.podiumPlaceText}>3ÈME</Text>
               </View>
             )}
           </View>
@@ -109,7 +104,7 @@ export default function PodiumScreen({ route, navigation }) {
         {/* Liste des autres joueurs */}
         {others.length > 0 && (
           <View style={styles.othersContainer}>
-            <Text style={styles.othersTitle}>Autres coureurs</Text>
+            <Text style={styles.othersTitle}>RESTE DU PELOTON</Text>
             {others.map((player, idx) => (
               <View key={player.id} style={styles.otherCard}>
                 <Text style={styles.otherPosition}>{idx + 4}</Text>
@@ -117,7 +112,7 @@ export default function PodiumScreen({ route, navigation }) {
                   <Image source={{ uri: player.photo }} style={styles.otherAvatar} />
                 ) : (
                   <View style={styles.otherAvatarPlaceholder}>
-                    <Text style={styles.otherAvatarText}>{idx + 4}</Text>
+                    <Text style={styles.otherAvatarText}>{player.name.charAt(0)}</Text>
                   </View>
                 )}
                 <Text style={styles.otherName}>{player.name}</Text>
@@ -126,28 +121,24 @@ export default function PodiumScreen({ route, navigation }) {
           </View>
         )}
 
-        {/* Si aucun classement */}
         {ranking.length === 0 && (
           <Text style={styles.emptyText}>Aucun coureur classé</Text>
         )}
       </ScrollView>
 
-      {/* --- ZONE DES BOUTONS --- */}
       <View style={styles.buttonContainer}>
-        {/* Si le jeu n'est PAS fini, on affiche le bouton retour au jeu */}
         {!isGameOver && (
           <TouchableOpacity style={styles.resumeButton} onPress={handleResumeGame}>
-            <Text style={styles.resumeButtonText}>🔙 RETOURNER À LA COURSE</Text>
+            <Text style={styles.resumeButtonText}>RETOURNER À LA COURSE</Text>
           </TouchableOpacity>
         )}
 
-        {/* Bouton Quitter */}
         <TouchableOpacity
           style={[styles.homeButton, !isGameOver && styles.homeButtonSecondary]}
           onPress={handleBackHome}
         >
           <Text style={styles.homeButtonText}>
-            {isGameOver ? "MENU PRINCIPAL" : "ABANDONNER & QUITTER"}
+            {isGameOver ? "MENU PRINCIPAL" : "QUITTER LA PARTIE"}
           </Text>
         </TouchableOpacity>
       </View>
@@ -158,185 +149,187 @@ export default function PodiumScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#121212',
+    backgroundColor: '#000',
   },
   scrollContent: {
-    paddingTop: 50,
+    paddingTop: 60,
     paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingBottom: 40,
   },
   podiumTitle: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: '900',
-    color: '#FFD700',
+    color: '#FFF',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 40,
     fontStyle: 'italic',
+    letterSpacing: 2,
   },
-
   podiumStage: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'flex-end',
-    marginBottom: 40,
-    height: 200,
+    marginBottom: 50,
+    height: 240,
   },
   podiumPlace: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
     marginHorizontal: 5,
-  },
-  podiumFirst: {
-    height: 220, // Increased height
-    backgroundColor: '#FFD700',
-    borderRadius: 15,
-    padding: 15,
-    borderWidth: 3,
-    borderColor: '#fff',
-  },
-  podiumSecond: {
-    height: 180, // Increased height
-    backgroundColor: '#C0C0C0',
-    borderRadius: 15,
-    padding: 12,
-    borderWidth: 2,
-    borderColor: '#fff',
-  },
-  podiumThird: {
-    height: 160, // Increased height
-    backgroundColor: '#CD7F32',
     borderRadius: 15,
     padding: 10,
-    borderWidth: 2,
-    borderColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#333',
+  },
+  podiumFirst: {
+    height: 240,
+    backgroundColor: '#FFD700',
+    borderColor: '#FFD700',
+    elevation: 10,
+    zIndex: 2,
+  },
+  podiumSecond: {
+    height: 190,
+    backgroundColor: '#111',
+  },
+  podiumThird: {
+    height: 160,
+    backgroundColor: '#080808',
   },
   podiumAvatar: {
-    width: 50, // Slightly smaller to give space to name
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: 'rgba(0,0,0,0.3)',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#222',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 5,
+    marginBottom: 10,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#444',
   },
   avatarImage: {
     width: '100%',
     height: '100%',
   },
   avatarNumber: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: '900',
-    color: '#fff',
+    color: '#FFF',
   },
   podiumName: {
-    color: '#fff', // White text for better contrast on colored backgrounds
+    color: '#FFF',
     fontWeight: '900',
-    fontSize: 20, // Slightly larger
+    fontSize: 14,
     textAlign: 'center',
-    marginBottom: 0,
-    // Add strong black shadow
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 3,
+    marginBottom: 5,
+    textTransform: 'uppercase',
   },
-  podiumMedal: {
-    fontSize: 42, // Larger medals
-    marginTop: -5,
+  podiumPlaceText: {
+    fontSize: 20,
+    fontWeight: '900',
+    color: '#666',
+    fontStyle: 'italic',
   },
   othersContainer: {
     marginTop: 20,
-    marginBottom: 20,
   },
   othersTitle: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 15,
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '900',
+    letterSpacing: 3,
+    marginBottom: 20,
+    opacity: 0.6,
   },
   otherCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#333',
+    backgroundColor: '#0A0A0A',
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 12,
     marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#111',
   },
   otherPosition: {
-    color: '#FFD700',
-    fontSize: 18,
+    color: '#FFF',
+    fontSize: 16,
     fontWeight: '900',
-    width: 30,
-    textAlign: 'center',
+    width: 40,
   },
   otherAvatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     marginRight: 15,
   },
   otherAvatarPlaceholder: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#555',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#222',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 15,
   },
   otherAvatarText: {
-    color: '#fff',
+    color: '#FFF',
     fontWeight: 'bold',
     fontSize: 14,
   },
   otherName: {
     flex: 1,
-    color: '#fff',
-    fontSize: 16,
+    color: '#FFF',
+    fontSize: 14,
     fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
   emptyText: {
-    color: '#666',
+    color: '#444',
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 16,
     fontStyle: 'italic',
-    marginTop: 50,
+    marginTop: 100,
   },
   buttonContainer: {
-    padding: 20,
-    backgroundColor: '#1A1A1A',
+    padding: 25,
+    backgroundColor: '#000',
     borderTopWidth: 1,
-    borderTopColor: '#333',
+    borderTopColor: '#111',
   },
   resumeButton: {
-    backgroundColor: '#2ecc71',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 30,
-    elevation: 5,
+    backgroundColor: '#FFD700',
+    paddingVertical: 18,
+    borderRadius: 12,
     marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#000',
   },
   resumeButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 18,
-    textAlign: 'center',
-  },
-  homeButton: {
-    backgroundColor: '#E30513',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 30,
-    elevation: 5,
-  },
-  homeButtonSecondary: {
-    backgroundColor: '#333',
-  },
-  homeButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: '#000',
+    fontWeight: '900',
     fontSize: 16,
     textAlign: 'center',
+    letterSpacing: 2,
+  },
+  homeButton: {
+    backgroundColor: '#111',
+    paddingVertical: 15,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#222',
+  },
+  homeButtonSecondary: {
+    backgroundColor: '#000',
+  },
+  homeButtonText: {
+    color: '#FFF',
+    fontWeight: '900',
+    fontSize: 14,
+    textAlign: 'center',
+    letterSpacing: 2,
+    opacity: 0.7,
   },
 });

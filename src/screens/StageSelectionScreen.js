@@ -76,9 +76,11 @@ export default function StageSelectionScreen({ navigation, route }) {
             onPress={() => setSelectedStage(item)}
           >
             <View style={styles.cardHeader}>
-              <Text style={styles.cardTitle}>{item.name}</Text>
+              <View style={{ flex: 1, marginRight: 10 }}>
+                <Text style={styles.cardTitle}>{item.name}</Text>
+              </View>
               <View style={[styles.badge, { backgroundColor: item.color }]}>
-                <Text style={styles.badgeText}>{item.difficulty}</Text>
+                <Text style={[styles.badgeText, { color: '#000' }]}>{item.difficulty}</Text>
               </View>
             </View>
 
@@ -159,33 +161,167 @@ export default function StageSelectionScreen({ navigation, route }) {
 
 // Les styles restent identiques à votre version originale
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#222' },
-  header: { paddingTop: 50, paddingHorizontal: 20, paddingBottom: 20, backgroundColor: '#1a1a1a' },
-  backButton: { marginBottom: 10 },
-  backButtonText: { color: '#888', fontSize: 16 },
-  title: { fontSize: 20, color: '#FFF', fontWeight: '300' },
-  subtitle: { fontSize: 32, color: '#FFD700', fontWeight: '900', textTransform: 'uppercase', fontStyle: 'italic' },
-  listContent: { padding: 20 },
-  card: { backgroundColor: '#333', borderRadius: 15, padding: 20, marginBottom: 15, borderWidth: 2, borderLeftWidth: 8 },
-  cardSelected: { backgroundColor: '#444', transform: [{ scale: 1.02 }], elevation: 10 },
-  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
-  cardTitle: { color: 'white', fontSize: 22, fontWeight: 'bold' },
-  badge: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 5 },
-  badgeText: { color: 'white', fontSize: 12, fontWeight: 'bold', textTransform: 'uppercase' },
-  infoButton: { alignSelf: 'flex-start', marginTop: 5 },
-  previewChartContainer: { backgroundColor: '#1a1a1a', padding: 15, borderRadius: 10, alignItems: 'center', marginVertical: 10, borderWidth: 1, borderColor: '#333', },
-  infoButtonText: { color: '#AAA', fontStyle: 'italic', textDecorationLine: 'underline' },
-  footer: { padding: 20, backgroundColor: '#1a1a1a' },
-  startButton: { backgroundColor: '#E30513', paddingVertical: 18, borderRadius: 50, alignItems: 'center' },
-  disabledButton: { backgroundColor: '#444', opacity: 0.5 },
-  startButtonText: { color: 'white', fontSize: 18, fontWeight: '900', fontStyle: 'italic' },
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'center', alignItems: 'center', padding: 20 },
-  modalContent: { backgroundColor: '#FFF', width: '100%', borderRadius: 20, padding: 25 },
-  modalTitle: { fontSize: 28, fontWeight: 'bold', marginBottom: 20, textAlign: 'center', textTransform: 'uppercase', fontStyle: 'italic' },
-  sectionTitle: { fontSize: 14, color: '#666', fontWeight: 'bold', marginBottom: 5, marginTop: 10 },
-  profileContainer: { backgroundColor: '#F0F0F0', padding: 15, borderRadius: 10, alignItems: 'center', marginVertical: 5 },
-  profileText: { fontSize: 18, fontWeight: 'bold', color: '#333' },
-  modalDesc: { fontSize: 16, color: '#333', lineHeight: 22, marginBottom: 20 },
-  closeButton: { paddingVertical: 15, borderRadius: 10, alignItems: 'center', marginTop: 10 },
-  closeButtonText: { color: 'white', fontWeight: 'bold', fontSize: 16 }
+  container: {
+    flex: 1,
+    backgroundColor: '#000'
+  },
+  header: {
+    paddingTop: 50,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    backgroundColor: '#000',
+    borderBottomWidth: 1,
+    borderBottomColor: '#222'
+  },
+  backButton: {
+    marginBottom: 10
+  },
+  backButtonText: {
+    color: '#888',
+    fontSize: 16
+  },
+  title: {
+    fontSize: 20,
+    color: '#FFF',
+    fontWeight: '300'
+  },
+  subtitle: {
+    fontSize: 32,
+    color: '#FFD700',
+    fontWeight: '900',
+    textTransform: 'uppercase',
+    fontStyle: 'italic'
+  },
+  listContent: {
+    padding: 20
+  },
+  card: {
+    backgroundColor: '#111',
+    borderRadius: 15,
+    padding: 20,
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#333'
+  },
+  cardSelected: {
+    backgroundColor: '#111',
+    transform: [{ scale: 1.02 }],
+    borderColor: '#FFD700',
+    borderWidth: 2,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10
+  },
+  cardTitle: {
+    color: 'white',
+    fontSize: 22,
+    fontWeight: 'bold'
+  },
+  badge: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#FFF'
+  },
+  badgeText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
+    textTransform: 'uppercase'
+  },
+  infoButton: {
+    alignSelf: 'flex-start',
+    marginTop: 5
+  },
+  infoButtonText: {
+    color: '#666',
+    fontStyle: 'italic',
+    textDecorationLine: 'underline'
+  },
+  previewChartContainer: {
+    backgroundColor: '#000',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginVertical: 10,
+    borderWidth: 1,
+    borderColor: '#222',
+  },
+  footer: {
+    padding: 20,
+    backgroundColor: '#000',
+    borderTopWidth: 1,
+    borderTopColor: '#222'
+  },
+  startButton: {
+    backgroundColor: '#FFD700',
+    paddingVertical: 18,
+    borderRadius: 50,
+    alignItems: 'center'
+  },
+  disabledButton: {
+    backgroundColor: '#111',
+    opacity: 0.3,
+    borderWidth: 1,
+    borderColor: '#222'
+  },
+  startButtonText: {
+    color: '#000',
+    fontSize: 18,
+    fontWeight: '900',
+    fontStyle: 'italic'
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.95)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20
+  },
+  modalContent: {
+    backgroundColor: '#111',
+    width: '100%',
+    borderRadius: 20,
+    padding: 25,
+    borderWidth: 1,
+    borderColor: '#333'
+  },
+  modalTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    fontStyle: 'italic',
+    color: '#FFF'
+  },
+  sectionTitle: {
+    fontSize: 14,
+    color: '#666',
+    fontWeight: 'bold',
+    marginBottom: 5,
+    marginTop: 10
+  },
+  modalDesc: {
+    fontSize: 16,
+    color: '#AAA',
+    lineHeight: 22,
+    marginBottom: 20
+  },
+  closeButton: {
+    backgroundColor: '#FFD700',
+    paddingVertical: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 10
+  },
+  closeButtonText: {
+    color: '#000',
+    fontWeight: 'bold',
+    fontSize: 16
+  }
 });

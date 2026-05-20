@@ -52,42 +52,19 @@ export const STAGES = {
   enfer_du_nord: {
     id: 'enfer_du_nord',
     title: "L'ENFER DU NORD",
-    color: "#FFCC00", // Jaune Difficile
-    // Profil : Tout plat, mais haché par les pavés (pics d'intensité)
-    heights: { 1: 10, 2: 10, 3: 30, 4: 10, 5: 10, 6: 30, 7: 10, 8: 10, 9: 40, 10: 10, 11: 10, 12: 40, 13: 10, 14: 10, 15: 40, 16: 10, 17: 40, 18: 10, 19: 40, 20: 40 },
+    color: "#FFCC00",
+    heights: { 1: 10, 2: 10, 3: 30, 4: 10, 5: 10, 6: 30, 7: 10, 8: 10, 9: 40, 10: 10, 11: 10, 12: 40, 13: 10, 14: 10, 15: 50 },
     data: {
-      // Alternance de Route (Plat) et de Secteurs Pavés (Mur/Montée)
-
-      // Départ calme
       1: { t: 600 }, 2: { t: 600 },
-      // Secteur Pavé 1 (Petit Mur)
       3: { t: 300, r: true },
-      // Répit
       4: { t: 900 }, 5: { t: 600 },
-      // Secteur Pavé 2 (Petit Mur)
       6: { t: 300, r: true },
-      // Répit
       7: { t: 900 }, 8: { t: 600 },
-      // Trouée d'Arenberg (Gros Mur)
       9: { t: 180, r: true },
-      // Long répit
       10: { t: 900 }, 11: { t: 600 },
-      // Secteur Pavé 4
       12: { t: 300, r: true },
-      // Répit
       13: { t: 900 }, 14: { t: 600 },
-      // Carrefour de l'Arbre (Gros Mur)
-      15: { t: 120, r: true },
-      // Dernier répit
-      16: { t: 900 },
-      // Mur final
-      17: { t: 180, r: true },
-      // Sprint vélodrome (Plat rapide avant finish)
-      18: { t: 900 },
-      // Dernier effort
-      19: { t: 180 },
-      // 20: Pif Paf
-      20: { t: 600 }
+      15: { t: 120 }
     }
   },
   la_soif: {

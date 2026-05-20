@@ -50,8 +50,8 @@ export default function HomeScreen({ navigation }) {
     // Pulse sur le bouton JOUER
     Animated.loop(
       Animated.sequence([
-        Animated.timing(pulseAnim, { toValue: 1.1, duration: 800, useNativeDriver: true }),
-        Animated.timing(pulseAnim, { toValue: 1, duration: 800, useNativeDriver: true }),
+        Animated.timing(pulseAnim, { toValue: 1.1, duration: 500, useNativeDriver: true }),
+        Animated.timing(pulseAnim, { toValue: 1, duration: 500, useNativeDriver: true }),
       ])
     ).start();
   }, []);
@@ -71,7 +71,7 @@ export default function HomeScreen({ navigation }) {
       }),
       Animated.timing(bikeMoveX, {
         toValue: width,
-        duration: 1100,
+        duration: 1600,
         easing: Easing.bezier(0.4, 0, 0.2, 1),
         useNativeDriver: true,
       }),
@@ -180,9 +180,9 @@ const styles = StyleSheet.create({
     zIndex: 20,
   },
   playButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     backgroundColor: '#FFD700',
     justifyContent: 'center',
     alignItems: 'center',
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     bottom: 25,
     width: '100%',
     alignItems: 'center',
-    paddingRight: '10%',
+    paddingRight: '0%',
   },
   michiText: {
     color: '#FFF',

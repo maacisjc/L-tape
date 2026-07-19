@@ -23,8 +23,7 @@
       "edgeToEdgeEnabled": true
     },
     "web": {
-      "bundler": "metro",
-      "baseUrl": "/L-tape" 
+      "bundler": "metro"
     },
     "githubUrl": "https://github.com/maacisjc/L-tape"
     }

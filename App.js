@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import HomeScreen from './src/screens/HomeScreen.js';
 import PlayersScreen from './src/screens/PlayersScreen.js';
 import StageSelectionScreen from './src/screens/StageSelectionScreen.js';
@@ -22,6 +23,7 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
       <Analytics />
+      <SpeedInsights />
     </>
   );
 }

@@ -91,6 +91,44 @@ export const STAGES = {
       // 10: Pif Paf
       10: { t: 600 }
     }
+  },
+  le_vc: {
+    id: 'le_vc',
+    title: "LE VC",
+    color: "#00D2FF", // Bleu Électrique
+    heights: {
+      1: 20,
+      2: 45,
+      3: 80,
+      4: 120,
+      5: 50,
+      6: 85,
+      7: 125,
+      8: 155,
+      9: 90,
+      10: 135,
+      11: 170,
+      12: 190,
+    },
+    data: {
+      // 1-4: Première ascension (4 paliers de 3 à 5 min)
+      1: { t: 300 },           // 5 min - Départ & mise en jambes
+      2: { t: 240 },           // 4 min - Ça monte
+      3: { t: 180, r: true },  // 3 min - Premier mur & Ravito
+      4: { t: 240 },           // 4 min - Relance vers le premier col
+      // 5: Première descente (15 min)
+      5: { t: 900, r: true },  // 15 min - Descente 1 (Repos)
+      // 6-8: Deuxième ascension (3 paliers de 3 à 5 min)
+      6: { t: 300 },           // 5 min - Reprise du rythme
+      7: { t: 180 },           // 3 min - Mur intermédiaire
+      8: { t: 240 },           // 4 min - Vers le deuxième sommet
+      // 9: Deuxième descente (15 min)
+      9: { t: 900, r: true },  // 15 min - Descente 2 (Grand répit)
+      // 10-12: Ascension finale & Sprint (3 paliers de 3 à 5 min)
+      10: { t: 300 },          // 5 min - Attaque finale
+      11: { t: 180, r: true }, // 3 min - Dernier mur & Ravito
+      12: { t: 300 }           // 5 min - Final VC
+    }
   }
 };
 
@@ -126,5 +164,13 @@ export const STAGES_LIST = [
     color: '#FF3B30',
     desc: 'Le toit du monde. Des cols mythiques et des descentes vertigineuses.',
     profile: '⛰️ Montagne'
+  },
+  {
+    id: 'le_vc',
+    name: 'Le VC',
+    difficulty: 'Extrême',
+    color: '#00D2FF',
+    desc: 'L\'étape reine du VC. 10 paliers explosifs de 3 à 5 min entrecoupés de 2 descentes de 15 min.',
+    profile: '⚡ Électrique'
   },
 ];
